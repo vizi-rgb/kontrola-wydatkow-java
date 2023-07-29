@@ -63,7 +63,7 @@ public class CommandBuilderTest {
         CommandBuilder commandBuilder = new CommandBuilder();
         Handler handler = new Handler() {
             @Override
-            public void handle() {
+            public void handle(String[] options) {
                 return;
             }
         };

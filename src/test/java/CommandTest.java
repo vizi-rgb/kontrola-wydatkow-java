@@ -26,7 +26,7 @@ public class CommandTest {
         CommandBuilder builder = new CommandBuilder();
         Handler handler = new Handler() {
             @Override
-            public void handle() {
+            public void handle(String[] options) {
                 return;
             }
         };
