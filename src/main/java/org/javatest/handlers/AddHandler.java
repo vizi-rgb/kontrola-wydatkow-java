@@ -3,10 +3,6 @@ package org.javatest.handlers;
 import org.javatest.command.Handler;
 
 import java.time.LocalDate;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -14,22 +10,13 @@ public class AddHandler implements Handler {
 
     private String message;
     private String date;
-    private double money;
+    private Double money;
 
     public AddHandler() {
         this.message = "";
-        // LocalDate.now().toString(): yyyy-mm-dd
-        String[] date = LocalDate.now().toString().split("-");
-        StringBuilder stringBuilder = new StringBuilder();
-
-        for (int i = date.length - 1; i >= 0; i--) {
-            stringBuilder.append(date[i]).append(".");
-        }
-
-        stringBuilder.deleteCharAt(stringBuilder.length() - 1);
-
-        this.date = stringBuilder.toString();
+        this.date = currentDateInDotFormat();
     }
+
 
     @Override
     public void handle(String[] options) {
@@ -39,27 +26,27 @@ public class AddHandler implements Handler {
                     try {
                         this.message = options[++i];
                     } catch (ArrayIndexOutOfBoundsException e) {
-                        System.out.println("Missing message after -m");
-                        return;
+                        System.err.println("Missing message after -m");
+                        System.exit(-1);
                     }
 
                     break;
 
                 case "-d":
-                    String[] dateString;
+                    String[] dateString = null;
 
                     try {
                         dateString = parseDate(options[++i]);
                     } catch (ArrayIndexOutOfBoundsException e) {
-                        System.out.println("Missing date after -d");
-                        return;
+                        System.err.println("Missing date after -d");
+                        System.exit(-1);
                     }
 
                     try {
                         assignDate(dateString);
                     } catch (ArrayIndexOutOfBoundsException e) {
-                        System.out.println("Wrong date format\nExpecting: [dd].[mm].[yyyy]");
-                        return;
+                        System.err.println("Wrong date format\nExpecting: [dd].[mm].[yyyy]");
+                        System.exit(-1);
                     }
 
                     break;
@@ -71,11 +58,29 @@ public class AddHandler implements Handler {
                         String moneyDotSeparated = options[i].replace(",", ".");
                         this.money = Double.parseDouble(moneyDotSeparated);
                     } else {
-                        System.out.println("Option not found");
-                        return;
+                        System.err.println("Option not found");
+                        System.exit(-1);
                     }
             }
+
+            if (money == null) {
+                System.err.println("Money parameter is required");
+                System.exit(-1);
+            }
+
         }
+    }
+
+    private String currentDateInDotFormat() {
+        String[] date = LocalDate.now().toString().split("-");
+        StringBuilder stringBuilder = new StringBuilder();
+
+        for (int i = date.length - 1; i >= 0; i--) {
+            stringBuilder.append(date[i]).append(".");
+        }
+
+        stringBuilder.deleteCharAt(stringBuilder.length() - 1);
+        return stringBuilder.toString();
     }
 
     private String[] parseDate(String input) {
