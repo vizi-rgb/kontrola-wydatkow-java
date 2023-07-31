@@ -1,13 +1,13 @@
 import org.javatest.command.Command;
 import org.javatest.command.CommandBuilder;
+import org.javatest.command.Handler;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.javatest.command.Handler;
 
 public class CommandBuilderTest {
 
     @Test
-    public void should_ThrowNullPointerException_WhenPassedNullActuator() {
+    public void should_ThrowIllegalArgumentException_WhenPassedNullActuator() {
         // given
         CommandBuilder commandBuilder = new CommandBuilder();
         String nullActuator = null;
@@ -16,7 +16,7 @@ public class CommandBuilderTest {
 
         // then
         Assertions.assertThrows(
-                NullPointerException.class,
+                IllegalArgumentException.class,
                 () -> commandBuilder.withActuator(nullActuator));
     }
 
@@ -44,7 +44,7 @@ public class CommandBuilderTest {
     }
 
     @Test
-    public void should_ThrowNullPointerException_WhenPassedNullHandler() {
+    public void should_ThrowIllegalArgumentException_WhenPassedNullHandler() {
         // given
         CommandBuilder commandBuilder = new CommandBuilder();
         Handler nullHandler = null;
@@ -53,7 +53,7 @@ public class CommandBuilderTest {
 
         // then
         Assertions.assertThrows(
-                NullPointerException.class,
+                IllegalArgumentException.class,
                 () -> commandBuilder.withHandler(nullHandler));
     }
 

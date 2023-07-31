@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 public class CommandTest {
 
     @Test
-    public void should_ThrowNullPointerException_WhenPassedNullBuilder() {
+    public void should_ThrowIllegalArgumentException_WhenPassedNullBuilder() {
         // given
         CommandBuilder builder = null;
 
@@ -15,7 +15,7 @@ public class CommandTest {
 
         // then
         Assertions.assertThrows(
-                NullPointerException.class,
+                IllegalArgumentException.class,
                 () -> new Command(builder)
         );
     }

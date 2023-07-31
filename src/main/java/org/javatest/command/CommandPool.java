@@ -1,6 +1,5 @@
 package org.javatest.command;
 
-import lombok.Getter;
 import lombok.NonNull;
 
 import java.util.ArrayList;
