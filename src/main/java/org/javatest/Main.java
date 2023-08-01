@@ -1,9 +1,6 @@
 package org.javatest;
 
-import org.javatest.command.Command;
-import org.javatest.command.CommandBuilder;
-import org.javatest.command.CommandPool;
-import org.javatest.command.CommandRunner;
+import org.javatest.command.*;
 import org.javatest.handlers.AddHandler;
 
 public class Main {
@@ -17,6 +14,7 @@ public class Main {
                         .withHandler(new AddHandler())
                         .build()
         );
+        ExpenseSaverManager.setExpenseSaver(new DBExpenseSaver<Expense>());
 
         CommandRunner runner = new CommandRunner(commands);
         runner.run(args);

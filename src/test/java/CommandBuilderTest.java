@@ -1,6 +1,4 @@
-import org.javatest.command.Command;
-import org.javatest.command.CommandBuilder;
-import org.javatest.command.Handler;
+import org.javatest.command.*;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
