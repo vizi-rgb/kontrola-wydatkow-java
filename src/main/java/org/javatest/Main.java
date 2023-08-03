@@ -14,7 +14,6 @@ public class Main {
                         .withHandler(new AddHandler())
                         .build()
         );
-        ExpenseSaverManager.setExpenseSaver(new DBExpenseSaver<Expense>());
 
         CommandRunner runner = new CommandRunner(commands);
         runner.run(args);
