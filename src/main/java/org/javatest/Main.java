@@ -11,7 +11,6 @@ public class Main {
                 builder
                         .withActuator("add")
                         .withDescription("Add new")
-                        .withHandler(new AddHandler())
                         .build()
         );
 

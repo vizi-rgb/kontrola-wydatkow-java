@@ -1,6 +1,8 @@
 package org.javatest.handlers;
 
 import org.javatest.command.Handler;
+import org.javatest.command.repository.Repository;
+import org.javatest.command.repository.RepositoryManager;
 
 import java.time.LocalDate;
 import java.util.regex.Matcher;
@@ -8,11 +10,13 @@ import java.util.regex.Pattern;
 
 public class AddHandler implements Handler {
 
+    private RepositoryManager<?> repositoryManager;
     private String message;
     private String date;
     private Double money;
 
-    public AddHandler() {
+    public <T extends Repository<?>> AddHandler(RepositoryManager<T> repositoryManager) {
+        this.repositoryManager = repositoryManager;
         this.message = "";
         this.date = currentDateInDotFormat();
     }
