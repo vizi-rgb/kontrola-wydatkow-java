@@ -3,10 +3,11 @@ package org.javatest.command.repository;
 import java.io.File;
 import java.nio.file.Path;
 import java.sql.*;
+import java.util.Collection;
 import java.util.Optional;
 import java.util.logging.FileHandler;
 
-public class CRUDExpenseRepository<K extends Number> implements Repository<Expense> {
+public class CRUDExpenseRepository implements Repository<Expense> {
 
     private final String url;
     private Connection connection;
@@ -49,13 +50,44 @@ public class CRUDExpenseRepository<K extends Number> implements Repository<Expen
         }
     }
 
-    public void deleteById(K id) {
-        // TODO
+    public void deleteById(long id) {
+        try {
+            PreparedStatement preparedStatement = connection
+                    .prepareStatement("delete from expenses where id = ?");
+
+            preparedStatement.setLong(1, id);
+            preparedStatement.execute();
+
+        } catch (SQLException e) {
+            System.err.println("Cannot delete from expenses table");
+            System.exit(-1);
+        }
     }
 
-    public Optional<Expense> getById(K id) {
-        // TODO
-        return null;
+    public Optional<Expense> getById(long id) {
+        Expense expense = null;
+
+        try {
+            PreparedStatement preparedStatement = connection
+                    .prepareStatement("select id, quota, message, date from expenses where id = ?");
+
+            preparedStatement.setLong(1, id);
+            preparedStatement.execute();
+            ResultSet resultSet =  preparedStatement.getResultSet();
+            expense = new Expense(
+                    resultSet.getLong("id"),
+                    resultSet.getDouble("quota"),
+                    resultSet.getString("message"),
+                    resultSet.getString("date")
+            );
+
+
+        } catch (SQLException e) {
+            System.err.println("Cannot get by id from expenses table");
+            System.exit(-1);
+        }
+
+        return Optional.of(expense);
     }
 
     public Optional<Expense> getByMessage(String message) {
@@ -63,9 +95,10 @@ public class CRUDExpenseRepository<K extends Number> implements Repository<Expen
         return null;
     }
 
-    public Optional<Expense> getByQuota(double quota) {
+    public Collection<Expense> getAllByQuota(double quota) {
         // TODO
-        return null;
+        Collection<Expense> expenses = null;
+        return expenses;
     }
 
     private void createTableExpensesIfNotExists() throws SQLException {

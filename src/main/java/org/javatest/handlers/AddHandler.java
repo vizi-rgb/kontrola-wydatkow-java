@@ -1,6 +1,7 @@
 package org.javatest.handlers;
 
 import org.javatest.command.Handler;
+import org.javatest.command.repository.Expense;
 import org.javatest.command.repository.Repository;
 import org.javatest.command.repository.RepositoryManager;
 
@@ -10,12 +11,12 @@ import java.util.regex.Pattern;
 
 public class AddHandler implements Handler {
 
-    private RepositoryManager<?> repositoryManager;
+    private RepositoryManager<? extends Repository<Expense>> repositoryManager;
     private String message;
     private String date;
     private Double money;
 
-    public <T extends Repository<?>> AddHandler(RepositoryManager<T> repositoryManager) {
+    public <T extends Repository<Expense>> AddHandler(RepositoryManager<T> repositoryManager) {
         this.repositoryManager = repositoryManager;
         this.message = "";
         this.date = currentDateInDotFormat();
@@ -66,13 +67,15 @@ public class AddHandler implements Handler {
                         System.exit(-1);
                     }
             }
-
-            if (money == null) {
-                System.err.println("Money parameter is required");
-                System.exit(-1);
-            }
-
         }
+
+        if (money == null) {
+            System.err.println("Money parameter is required");
+            System.exit(-1);
+        }
+
+        final Expense expense = new Expense(money, message, date);
+        repositoryManager.getRepository().save(expense);
     }
 
     private String currentDateInDotFormat() {
