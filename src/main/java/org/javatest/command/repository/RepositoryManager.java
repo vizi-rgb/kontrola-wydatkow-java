@@ -1,6 +1,5 @@
 package org.javatest.command.repository;
 
-import lombok.Getter;
 import lombok.NonNull;
 
 public class RepositoryManager<T extends Repository<?>> {
