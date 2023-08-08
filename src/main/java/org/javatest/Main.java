@@ -9,12 +9,13 @@ public class Main {
     public static void main(String[] args) {
         RepositoryManager<CRUDExpenseRepository> repositoryManager = new RepositoryManager<>();
         repositoryManager.setRepository(new CRUDExpenseRepository());
+
         CommandBuilder builder = new CommandBuilder();
         CommandPool commands = new CommandPool();
         commands.add(
                 builder
                         .withActuator("add")
-                        .withDescription("Add new")
+                        .withDescription("Add new expense")
                         .withHandler(new AddHandler(repositoryManager))
                         .build()
         );

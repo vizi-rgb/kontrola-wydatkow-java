@@ -1,5 +1,6 @@
 package org.javatest.handlers;
 
+import org.javatest.command.CriticalError;
 import org.javatest.command.Handler;
 import org.javatest.command.repository.Expense;
 import org.javatest.command.repository.Repository;
@@ -31,8 +32,7 @@ public class AddHandler implements Handler {
                     try {
                         this.message = options[++i];
                     } catch (ArrayIndexOutOfBoundsException e) {
-                        System.err.println("Missing message after -m");
-                        System.exit(-1);
+                        CriticalError.report("Missing message after -m");
                     }
 
                     break;
@@ -43,15 +43,13 @@ public class AddHandler implements Handler {
                     try {
                         dateString = parseDate(options[++i]);
                     } catch (ArrayIndexOutOfBoundsException e) {
-                        System.err.println("Missing date after -d");
-                        System.exit(-1);
+                        CriticalError.report("Missing date after -d");
                     }
 
                     try {
                         assignDate(dateString);
                     } catch (ArrayIndexOutOfBoundsException e) {
-                        System.err.println("Wrong date format\nExpecting: [dd].[mm].[yyyy]");
-                        System.exit(-1);
+                        CriticalError.report("Wrong date format\nExpecting: [dd].[mm].[yyyy]");
                     }
 
                     break;
@@ -63,19 +61,21 @@ public class AddHandler implements Handler {
                         String moneyDotSeparated = options[i].replace(",", ".");
                         this.money = Double.parseDouble(moneyDotSeparated);
                     } else {
-                        System.err.println("Option not found");
-                        System.exit(-1);
+                        CriticalError.report("Option not found");
                     }
             }
         }
 
         if (money == null) {
-            System.err.println("Money parameter is required");
-            System.exit(-1);
+            CriticalError.report("Money parameter is required");
         }
 
         final Expense expense = new Expense(money, message, date);
-        repositoryManager.getRepository().save(expense);
+        try {
+            repositoryManager.getRepository().save(expense);
+        } catch (NullPointerException e) {
+            CriticalError.report("Repository passed by RepositoryManager is null");
+        }
     }
 
     private String currentDateInDotFormat() {
@@ -100,7 +100,7 @@ public class AddHandler implements Handler {
             case 1: {
                 String day = getDay(dateString[0]);
                 LocalDate date = LocalDate.now();
-                this.date = day + "." + date.getMonth() + "." + date.getYear();
+                this.date = day + "." + date.getMonthValue() + "." + date.getYear();
                 break;
             }
 
