@@ -17,15 +17,14 @@ public class CRUDExpenseRepository implements Repository<Expense> {
         Path path = Path.of("src", "db", "expense.db");
         url = "jdbc:sqlite:" + String.valueOf(path);
 
-        try {
-            connection = DriverManager.getConnection(url);
-            statement = connection.createStatement();
-        } catch (SQLException e) {
-            System.err.println(e.getMessage());
-            System.exit(-1);
-        }
+        establishConnectionWithDatabase();
     }
+    public CRUDExpenseRepository(String repositoryName) {
+        Path path = Path.of("src", "db", repositoryName);
+        url = "jdbc:sqlite:" + String.valueOf(path);
 
+        establishConnectionWithDatabase();
+    }
 
     @Override
     public void save(Expense expense) {
@@ -109,5 +108,15 @@ public class CRUDExpenseRepository implements Repository<Expense> {
                 "message TEXT);";
 
         statement.execute(createUsersTable);
+    }
+
+    private void establishConnectionWithDatabase() {
+        try {
+            connection = DriverManager.getConnection(url);
+            statement = connection.createStatement();
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+            System.exit(-1);
+        }
     }
 }
