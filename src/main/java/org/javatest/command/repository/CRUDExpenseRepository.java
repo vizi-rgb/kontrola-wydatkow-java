@@ -14,14 +14,14 @@ public class CRUDExpenseRepository implements Repository<Expense> {
     private Statement statement;
 
     public CRUDExpenseRepository() {
-        Path path = Path.of("src", "db", "expense.db");
-        url = "jdbc:sqlite:" + String.valueOf(path);
+        File file = new File("src/db/expense.db");
+        url = "jdbc:sqlite:" + file.getAbsolutePath();
 
         establishConnectionWithDatabase();
     }
     public CRUDExpenseRepository(String repositoryName) {
-        Path path = Path.of("src", "db", repositoryName);
-        url = "jdbc:sqlite:" + String.valueOf(path);
+        File file = new File("src/db/" + repositoryName);
+        url = "jdbc:sqlite:" + file.getAbsolutePath();
 
         establishConnectionWithDatabase();
     }
