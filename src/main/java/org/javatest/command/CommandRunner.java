@@ -22,10 +22,10 @@ public class CommandRunner {
                 Handler handler = c.getHandler();
                 String[] options = Arrays.copyOfRange(args, 1, args.length);
                 handler.handle(options);
-            } else {
-                System.out.println("Command not found");
                 return;
             }
         }
+
+        System.out.println("Command not found");
     }
 }

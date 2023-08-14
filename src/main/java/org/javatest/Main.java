@@ -4,6 +4,7 @@ import org.javatest.command.*;
 import org.javatest.command.repository.CRUDExpenseRepository;
 import org.javatest.command.repository.RepositoryManager;
 import org.javatest.handlers.AddHandler;
+import org.javatest.handlers.LogHandler;
 
 public class Main {
     public static void main(String[] args) {
@@ -17,6 +18,12 @@ public class Main {
                         .withActuator("add")
                         .withDescription("Add new expense")
                         .withHandler(new AddHandler(repositoryManager))
+                        .build(),
+
+                builder
+                        .withActuator("log")
+                        .withDescription("Show saved expenses")
+                        .withHandler(new LogHandler(repositoryManager))
                         .build()
         );
 
