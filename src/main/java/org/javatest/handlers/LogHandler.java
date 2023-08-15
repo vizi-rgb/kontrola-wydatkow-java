@@ -1,5 +1,6 @@
 package org.javatest.handlers;
 
+import org.javatest.command.CriticalError;
 import org.javatest.command.Handler;
 import org.javatest.command.repository.Expense;
 import org.javatest.command.repository.Repository;
@@ -38,14 +39,24 @@ public class LogHandler implements Handler  {
     @Override
     public void handle(String[] options) {
         for (int i = 0; i < options.length; i++) {
-            if (options[i].startsWith("-")) {
-                for (int j = 1; j < options[i].length(); j++) {
-                    for (FLAGS f : FLAGS.values()) {
-                        if (options[i].charAt(j) == f.getActuator().charAt(0)) {
-                            flags.add(f);
-                            break;
-                        }
+            getRequestedFlags(options[i]);
+        }
+    }
+
+    private void getRequestedFlags(String option) {
+        if (option.startsWith("-")) {
+            for (int j = 1; j < option.length(); j++) {
+                boolean matched = false;
+                for (FLAGS flag : FLAGS.values()) {
+                    if (option.charAt(j) == flag.getActuator().charAt(0)) {
+                        flags.add(flag);
+                        matched = true;
+                        break;
                     }
+                }
+
+                if (!matched) {
+                    CriticalError.report("Syntax error: -" + option.charAt(j) + "not recognized");
                 }
             }
         }
