@@ -2,6 +2,7 @@ package org.javatest.handlers;
 
 import org.javatest.command.CriticalError;
 import org.javatest.command.Handler;
+import org.javatest.command.MyDateFormat;
 import org.javatest.command.repository.Expense;
 import org.javatest.command.repository.Repository;
 import org.javatest.command.repository.RepositoryManager;
@@ -14,13 +15,13 @@ public class AddHandler implements Handler {
 
     private RepositoryManager<? extends Repository<Expense>> repositoryManager;
     private String message;
-    private String date;
+    private MyDateFormat date;
     private Double money;
 
     public <T extends Repository<Expense>> AddHandler(RepositoryManager<T> repositoryManager) {
         this.repositoryManager = repositoryManager;
         this.message = "";
-        this.date = currentDateInDotFormat();
+        this.date = currentDate();
     }
 
 
@@ -78,16 +79,13 @@ public class AddHandler implements Handler {
         }
     }
 
-    private String currentDateInDotFormat() {
+    private MyDateFormat currentDate() {
         String[] date = LocalDate.now().toString().split("-");
-        StringBuilder stringBuilder = new StringBuilder();
+        int day = Integer.parseInt(date[2]);
+        int month = Integer.parseInt(date[1]);
+        int year = Integer.parseInt(date[0]);
 
-        for (int i = date.length - 1; i >= 0; i--) {
-            stringBuilder.append(date[i]).append(".");
-        }
-
-        stringBuilder.deleteCharAt(stringBuilder.length() - 1);
-        return stringBuilder.toString();
+        return new MyDateFormat(day, month, year);
     }
 
     private String[] parseDate(String input) {
@@ -98,37 +96,30 @@ public class AddHandler implements Handler {
     private void assignDate(String[] dateString) {
         switch (dateString.length) {
             case 1: {
-                String day = getDay(dateString[0]);
+                int day = Integer.parseInt(dateString[0]);
                 LocalDate date = LocalDate.now();
-                this.date = day + "." + date.getMonthValue() + "." + date.getYear();
+                this.date = new MyDateFormat(day, date.getMonthValue(), date.getYear());
                 break;
             }
 
             case 2: {
-                String day = getDay(dateString[0]);
-                String month = getMonth(dateString[1]);
-                this.date = day + "." + month + "." + LocalDate.now().getYear();
+                int day = Integer.parseInt(dateString[0]);
+                int month = Integer.parseInt(dateString[1]);
+                LocalDate date = LocalDate.now();
+                this.date = new MyDateFormat(day, month, date.getYear());
                 break;
             }
 
             case 3: {
-                String day = getDay(dateString[0]);
-                String month = getMonth(dateString[1]);
-                String year = dateString[2];
-                this.date = day + "." + month + "." + year;
+                int day = Integer.parseInt(dateString[0]);
+                int month = Integer.parseInt(dateString[1]);
+                int year = Integer.parseInt(dateString[2]);
+                this.date = new MyDateFormat(day, month, year);
                 break;
             }
 
             default:
                 throw new ArrayIndexOutOfBoundsException("Length " + dateString.length);
         }
-    }
-
-    private String getMonth(String month) {
-        return month.length() == 1 ? "0" + month : month;
-    }
-
-    private String getDay(String day) {
-        return day.length() == 1 ? "0" + day : day;
     }
 }

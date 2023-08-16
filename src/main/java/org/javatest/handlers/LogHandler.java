@@ -2,15 +2,18 @@ package org.javatest.handlers;
 
 import org.javatest.command.CriticalError;
 import org.javatest.command.Handler;
+import org.javatest.command.repository.CRUDExpenseRepository;
 import org.javatest.command.repository.Expense;
 import org.javatest.command.repository.Repository;
 import org.javatest.command.repository.RepositoryManager;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.EnumSet;
 
 public class LogHandler implements Handler  {
 
-    private RepositoryManager<? extends Repository<Expense>> repositoryManager;
+    private RepositoryManager<CRUDExpenseRepository> repositoryManager;
 
     private enum FLAGS {
         MONTHLY("m"),
@@ -31,7 +34,7 @@ public class LogHandler implements Handler  {
 
     private final EnumSet<FLAGS> flags;
 
-    public <T extends Repository<Expense>> LogHandler(RepositoryManager<T> repositoryManager) {
+    public LogHandler(RepositoryManager<CRUDExpenseRepository> repositoryManager) {
         this.repositoryManager = repositoryManager;
         flags = EnumSet.noneOf(FLAGS.class);
     }
@@ -41,6 +44,18 @@ public class LogHandler implements Handler  {
         for (int i = 0; i < options.length; i++) {
             getRequestedFlags(options[i]);
         }
+
+        Collection<Expense> expenses = repositoryManager.getRepository().getAll();
+
+        for (FLAGS flag : flags) {
+            switch (flag) {
+                case YEARLY: {
+
+                    break;
+                }
+            }
+        }
+
     }
 
     private void getRequestedFlags(String option) {
