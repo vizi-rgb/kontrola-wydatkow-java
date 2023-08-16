@@ -1,3 +1,4 @@
+import org.javatest.command.MyDateFormat;
 import org.javatest.command.repository.CRUDExpenseRepository;
 import org.javatest.command.repository.Expense;
 import org.junit.jupiter.api.*;
@@ -12,7 +13,7 @@ public class CRUDExpenseRepositoryTest {
 
     @BeforeEach
     public void beforeAll() {
-        testRepositoryName = "expenses-test";
+        testRepositoryName = "expenses-test.db";
         crudExpenseRepository = new CRUDExpenseRepository(testRepositoryName);
     }
 
@@ -29,12 +30,12 @@ public class CRUDExpenseRepositoryTest {
     @Test
     public void should_AddExpense_WhenSaveInvoked() {
         // given
-        Expense expense = new Expense(1L, 0.50, "test", "02.10.1993");
+        Expense expense = new Expense(1L, 0.50, "test", new MyDateFormat(2, 12, 2002));
 
         // when
         crudExpenseRepository.save(expense);
         Expense ret = crudExpenseRepository.getById(1L)
-                .orElse(new Expense(0, "", ""));
+                .orElse(new Expense(0, "", new MyDateFormat(0, 0, 0)));
 
         // then
         Assertions.assertEquals(expense, ret);
@@ -43,12 +44,12 @@ public class CRUDExpenseRepositoryTest {
     @Test
     public void should_DeleteExpense_WhenDeleteInvoked() {
         // given
-        Expense expense = new Expense(1L, 0.50, "test", "02.10.1993");
+        Expense expense = new Expense(1L, 0.50, "test", new MyDateFormat(2, 10, 1993));
         crudExpenseRepository.save(expense);
 
         // when
         crudExpenseRepository.deleteById(1L);
-        Expense expected = new Expense(0L, 0, null, null);
+        Expense expected = new Expense(0L, 0, null, new MyDateFormat(0, 0, 0));
 
         // then
         Assertions.assertEquals(expected, crudExpenseRepository.getById(1L).get());
