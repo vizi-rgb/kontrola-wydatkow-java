@@ -9,7 +9,7 @@ public record MyDateFormat(int day, int month, int year) {
                year;
     }
 
-    public String padIfNeeded(String date) {
+    private String padIfNeeded(String date) {
         if (date.length() < 2) {
             date = "0" + date;
         }

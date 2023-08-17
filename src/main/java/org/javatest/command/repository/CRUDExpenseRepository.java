@@ -106,7 +106,7 @@ public class CRUDExpenseRepository implements Repository<Expense> {
 
     public Collection<Expense> getAll() {
         Collection<Expense> expenses = new ArrayList<>();
-        String sqlSelectAll = "select id, quota, message, date from expenses";
+        String sqlSelectAll = "select id, quota, message, day, month, year from expenses";
         try {
             ResultSet resultSet = statement.executeQuery(sqlSelectAll);
             while (resultSet.next()) {
