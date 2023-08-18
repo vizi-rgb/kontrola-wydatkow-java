@@ -3,12 +3,10 @@ package org.javatest.command.repository;
 import org.javatest.command.MyDateFormat;
 
 import java.io.File;
-import java.nio.file.Path;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Optional;
-import java.util.logging.FileHandler;
 
 public class CRUDExpenseRepository implements Repository<Expense> {
 
