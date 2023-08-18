@@ -99,11 +99,6 @@ public class CRUDExpenseRepository implements Repository<Expense> {
         return Optional.of(expense);
     }
 
-    public Optional<Expense> getByMessage(String message) {
-        // TODO
-        return null;
-    }
-
     public Collection<Expense> getAll() {
         Collection<Expense> expenses = new ArrayList<>();
         String sqlSelectAll = "select id, quota, message, day, month, year from expenses";
@@ -121,12 +116,6 @@ public class CRUDExpenseRepository implements Repository<Expense> {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        return expenses;
-    }
-
-    public Collection<Expense> getAllByQuota(double quota) {
-        // TODO
-        Collection<Expense> expenses = null;
         return expenses;
     }
 
