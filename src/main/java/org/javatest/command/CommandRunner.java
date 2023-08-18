@@ -33,7 +33,7 @@ public class CommandRunner {
         System.out.println("Syntax:");
         for (Command c : commandPool) {
             System.out.println(programName + " " + c.getActuator());
-            System.out.println(" - " + c.getDescription() + "\n");
+            System.out.println(c.getDescription() + "\n");
         }
     }
 }
