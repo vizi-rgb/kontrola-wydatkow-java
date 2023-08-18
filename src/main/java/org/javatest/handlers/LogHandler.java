@@ -8,7 +8,7 @@ import org.javatest.command.repository.RepositoryManager;
 
 import java.util.*;
 
-public class LogHandler implements Handler  {
+public class LogHandler implements Handler {
 
     private RepositoryManager<CRUDExpenseRepository> repositoryManager;
 

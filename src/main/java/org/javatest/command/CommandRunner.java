@@ -13,7 +13,7 @@ public class CommandRunner {
 
     public void run(@NonNull String[] args) {
         if (args.length < 1) {
-            // TODO: print help
+            printHelp("kontrola-wydatkow-java");
             return;
         }
 
@@ -27,5 +27,13 @@ public class CommandRunner {
         }
 
         System.out.println("Command not found");
+    }
+
+    private void printHelp(String programName) {
+        System.out.println("Syntax:");
+        for (Command c : commandPool) {
+            System.out.println(programName + " " + c.getActuator());
+            System.out.println(" - " + c.getDescription() + "\n");
+        }
     }
 }
