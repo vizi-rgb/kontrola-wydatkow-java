@@ -26,14 +26,14 @@ public class CommandRunner {
             }
         }
 
-        System.out.println("Command not found");
+        System.err.println("Command not found");
     }
 
     private void printHelp(String programName) {
-        System.out.println("Syntax:");
+        System.err.println("Syntax:");
         for (Command c : commandPool) {
-            System.out.println(programName + " " + c.getActuator());
-            System.out.println(c.getDescription() + "\n");
+            System.err.println(programName + " " + c.getActuator());
+            System.err.println(c.getDescription() + "\n");
         }
     }
 }
